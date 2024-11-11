@@ -1,13 +1,18 @@
+import numpy as np
+import random
+
 # Ejemplo de dataset de entrada para el problema de asignación de horarios
 dataset = {"n_courses" : 3,
            "n_days" : 3,
            "n_hours_day" : 3,
            "courses" : [("IA", 1), ("ALG", 2), ("BD", 3)]}
 
+
 def generate_random_array_int(alphabet, length):
     # Genera un array de enteros aleatorios de tamaño length
     # usando el alfabeto dado
-    return None
+    return [random.choice(alphabet) for _ in range(length)]
+
 
 def generate_initial_population_timetabling(pop_size, *args, **kwargs):
     dataset = kwargs['dataset'] # Dataset con la misma estructura que el ejemplo
@@ -224,8 +229,6 @@ dataset6 = {"n_courses" : 11,
             "courses" : [("IA", 2), ("ALG", 4), ("BD", 6), ("POO", 4), ("AC", 4), ("FP", 4), ("TP", 2), ("FC", 4), ("TSO", 2), ("AM", 4), ("LMD", 4)]}
 
 
-import numpy as np
-import random
 
 def set_seed(seed):
     # Se debe fijar la semilla usada para generar números aleatorios
