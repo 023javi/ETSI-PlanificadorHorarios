@@ -174,9 +174,33 @@ def calculate_p2(solution, *args, **kwargs):
 
 
 def calculate_p3(solution, *args, **kwargs):
+    """
+    Calcula el número de asignaturas con horas no consecutivas en un mismo día.
+    """
     dataset = kwargs['dataset']
-    # Calcula el número de asignaturas con horas NO consecutivas en un mismo día
-    return None
+    n_days = dataset['n_days']
+    n_hours_day = dataset['n_hours_day']
+    courses = dataset['courses']
+
+    # Crear un diccionario para almacenar las horas asignadas a cada asignatura
+    daily_assignments = [{} for _ in range(n_days)]
+
+    idx = 0
+    for course, hours in courses:
+        for _ in range(hours):
+            day = solution[idx] // n_hours_day
+            hour = solution[idx] % n_hours_day
+            daily_assignments[day].setdefault(course, []).append(hour)
+            idx += 1
+
+    # Contar asignaturas no consecutivas
+    p3 = 0
+    for day in daily_assignments:
+        for hours in day.values():
+            if len(hours) > 1 and any(b - a > 1 for a, b in zip(sorted(hours), sorted(hours)[1:])):
+                p3 += 1
+
+    return p3
 
 def fitness_timetabling(solution, *args, **kwargs):
     dataset = kwargs['dataset']
