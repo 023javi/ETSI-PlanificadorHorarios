@@ -203,10 +203,20 @@ def calculate_p3(solution, *args, **kwargs):
     return p3
 
 def fitness_timetabling(solution, *args, **kwargs):
+    """
+    Calcula el fitness de una solución de timetabling siguiendo las penalizaciones.
+    """
     dataset = kwargs['dataset']
-    # Calcula el fitness de una solución de timetabling siguiendo la fórmula del enunciado
-    return None
+    c1 = calculate_c1(solution, dataset=dataset)
+    c2 = calculate_c2(solution, dataset=dataset)
+    p1 = calculate_p1(solution, dataset=dataset)
+    p2 = calculate_p2(solution, dataset=dataset)
+    p3 = calculate_p3(solution, dataset=dataset)
 
+    # Fitness según la fórmula del enunciado
+    if c1 > 0 or c2 > 0:
+        return 0
+    return 1 / (1 + p1 + p2 + p3)
 '''
 # Pistas:
 # - Una función que devuelva la tabla de horarios de una solución
