@@ -107,7 +107,24 @@ def calculate_c2(solution, *args, **kwargs):
     dataset = kwargs['dataset']
     # Calcula la cantidad de horas por encima de 2 que se imparten
     # de una misma asignatura en un mismo día
-    return None
+
+    n_days = dataset['n_days']
+    n_hours_day = dataset['n_hours_day']
+    courses = dataset['courses']
+
+    # Crear un diccionario para contar asignaturas por día
+    daily_count = [{} for _ in range(n_days)]
+
+    #Asignar las horas de la solución al diccionario
+    idx = 0
+    for course, hours in courses:
+        for _ in range(hours):
+            day = solution[idx] // n_hours_day
+            daily_count[day][course] = daily_count[day].get(course, 0) + 1
+            idx += 1
+
+    c2 = sum(max(0, count - 2) for day in daily_count for count in day.values())
+    return c2
 
 def calculate_p1(solution, *args, **kwargs):
     dataset = kwargs['dataset']
