@@ -91,9 +91,17 @@ def calculate_c1(solution, *args, **kwargs):
     n_hours_day = dataset['n_hours_day']
     courses = dataset['courses']
 
+    # Crear una matriz de horarios [n_days][n_hours_day] para contar solapamientos
     schedule = np.zeros((n_days, n_hours_day), dtype=int)
 
-    return None
+    for val in solution:
+        day = val // n_hours_day
+        hour = val % n_hours_day
+        schedule[day, hour] += 1
+
+    c1 = np.sum(schedule[schedule > 1] - 1)
+
+    return c1
 
 def calculate_c2(solution, *args, **kwargs):
     dataset = kwargs['dataset']
