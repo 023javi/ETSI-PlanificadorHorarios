@@ -129,6 +129,13 @@ def calculate_c2(solution, *args, **kwargs):
 def calculate_p1(solution, *args, **kwargs):
     dataset = kwargs['dataset']
     # Calcula el número de huecos vacíos entre asignaturas
+    n_days = dataset['n_days']
+    n_hours_day = dataset['n_hours_day']
+    courses = dataset['courses']
+
+    schedule = np.zeros((n_days, n_hours_day), dtype=int)
+
+    for
     return None
 
 def calculate_p2(solution, *args, **kwargs):
