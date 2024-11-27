@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f86f4ec-b2dd-4b8d-9160-c9a50e070844" name="Changes" comment="">
+    <list default="true" id="3f86f4ec-b2dd-4b8d-9160-c9a50e070844" name="Changes" comment="Feat: Edit generate_random_array_int method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ComputacionEvolutiva.py" beforeDir="false" afterPath="$PROJECT_DIR$/ComputacionEvolutiva.py" afterDir="false" />
     </list>
@@ -23,21 +23,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "023javi"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;023javi&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/023javi/ETSI-PlanificadorHorarios.git",
-    "accountId": "cbf58753-f9c2-492a-9681-806472a13fc9"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/023javi/ETSI-PlanificadorHorarios.git&quot;,
+    &quot;accountId&quot;: &quot;cbf58753-f9c2-492a-9681-806472a13fc9&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2oiuYRkjvGCIvAO4HIlJ0A3KsAx" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -46,8 +46,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.ComputacionEvolutiva.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/javie/Desktop/ETSISI UPM 2024-2025/INTELIGENCIA ARTIFICIAL/PRACTICAS/PRACTICAS PY/PracticaComputacionEvolutiva"
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -66,6 +68,19 @@
       <option name="presentableId" value="Default" />
       <updated>1731364764936</updated>
     </task>
+    <task id="LOCAL-00001" summary="Feat: Edit generate_random_array_int method">
+      <option name="closed" value="true" />
+      <created>1731366617037</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1731366617037</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Feat: Edit generate_random_array_int method" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feat: Edit generate_random_array_int method" />
   </component>
 </project>

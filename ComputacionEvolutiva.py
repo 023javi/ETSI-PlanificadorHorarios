@@ -11,16 +11,26 @@ dataset = {"n_courses" : 3,
 def generate_random_array_int(alphabet, length):
     # Genera un array de enteros aleatorios de tamaño length
     # usando el alfabeto dado
-    return [random.choice(alphabet) for _ in range(length)]
-
+    return np.random.choice(alphabet, size=length, replace=True)
 
 def generate_initial_population_timetabling(pop_size, *args, **kwargs):
     dataset = kwargs['dataset'] # Dataset con la misma estructura que el ejemplo
+    cursos = dataset['courses']
+    n_days = dataset['n_days']
+    n_hours_day = dataset['n_hours_day']
+
+    alfabhet = [(hours, days) for hours in range(n_hours_day) for days in range(n_days)]
+
+
     # Obtener el alfabeto y la longitud a partir del dataset
     # Genera una población inicial de tamaño pop_size
-    return None
+    return alfabhet
 
 
+pop = generate_initial_population_timetabling(10, dataset=dataset)
+print(pop)
+
+'''
 ################################# NO TOCAR #################################
 #                                                                          #
 def print_timetabling_solution(solution, dataset):
@@ -326,3 +336,4 @@ launch_experiment(seeds, dataset1, generate_initial_population_timetabling, 50, 
                   calculate_p1, calculate_p2, calculate_p3, generation_stop, 50, tournament_selection, one_point_crossover, 0.8,
                   uniform_mutation, 0.1, generational_replacement, max_gen=50, tournament_size=2)
 # Recuerda también mostrar el horario de la mejor solución obtenida en los casos peor, mejor y mediano
+'''
