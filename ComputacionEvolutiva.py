@@ -11,7 +11,8 @@ dataset = {"n_courses" : 3,
 def generate_random_array_int(alphabet, length):
     # Genera un array de enteros aleatorios de tamaño length
     # usando el alfabeto dado
-    return np.random.choice(alphabet, size=length, replace=True)
+    indices = np.random.randint(0, len(alphabet), length)
+    return np.array(alphabet)[indices]
 
 def generate_initial_population_timetabling(pop_size, *args, **kwargs):
     dataset = kwargs['dataset'] # Dataset con la misma estructura que el ejemplo
@@ -32,10 +33,9 @@ def generate_initial_population_timetabling(pop_size, *args, **kwargs):
     return population
 
 
-pop = generate_initial_population_timetabling(10, dataset=dataset)
-print(pop)
 
-'''
+
+
 ################################# NO TOCAR #################################
 #                                                                          #
 def print_timetabling_solution(solution, dataset):
@@ -83,9 +83,16 @@ def print_timetabling_solution(solution, dataset):
 candidate = generate_random_array_int(list(range(9)), 6)
 print_timetabling_solution(candidate, dataset)
 
+
 def calculate_c1(solution, *args, **kwargs):
     dataset = kwargs['dataset']
     # Calcula la cantidad de asignaturas que se imparten en mismas franjas horarias
+    n_days = dataset['n_days']
+    n_hours_day = dataset['n_hours_day']
+    courses = dataset['courses']
+
+    schedule = np.zeros((n_days, n_hours_day), dtype=int)
+
     return None
 
 def calculate_c2(solution, *args, **kwargs):
@@ -114,6 +121,7 @@ def fitness_timetabling(solution, *args, **kwargs):
     # Calcula el fitness de una solución de timetabling siguiendo la fórmula del enunciado
     return None
 
+'''
 # Pistas:
 # - Una función que devuelva la tabla de horarios de una solución
 # - Una función que devuelva la cantidad de horas por día de cada asignatura
