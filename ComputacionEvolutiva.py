@@ -217,14 +217,17 @@ def fitness_timetabling(solution, *args, **kwargs):
     if c1 > 0 or c2 > 0:
         return 0
     return 1 / (1 + p1 + p2 + p3)
-'''
+
+def hours_per_subject(dataset):
+    return [course[1] for course in dataset['courses']]
+
 # Pistas:
 # - Una función que devuelva la tabla de horarios de una solución
 # - Una función que devuelva la cantidad de horas por día de cada asignatura
 # - A través de args y kwargs se pueden pasar argumentos adicionales que vayamos a necesitar
-
 fitness_timetabling(candidate, dataset=dataset) # Devuelve la fitness del candidato de ejemplo
 
+'''
 def tournament_selection(population, fitness, number_parents, *args, **kwargs):
     t = kwargs['tournament_size'] # Tamaño del torneo
     # Selecciona number_parents individuos de la población mediante selección por torneo
