@@ -153,9 +153,25 @@ def calculate_p1(solution, *args, **kwargs):
     return p1
 
 def calculate_p2(solution, *args, **kwargs):
+    """
+    Calcula el número de días utilizados en los horarios.
+    """
     dataset = kwargs['dataset']
-    # Calcula el número de días utilizados en los horarios
-    return None
+    n_days = dataset['n_days']
+    n_hours_day = dataset['n_hours_day']
+
+    # Crear matriz de horarios [n_days][n_hours_day] para marcar asignaturas
+    schedule = np.zeros((n_days, n_hours_day), dtype=bool)
+
+    for val in solution:
+        day = val // n_hours_day
+        hour = val % n_hours_day
+        schedule[day, hour] = True
+
+    # Contar días con asignaturas
+    p2 = np.sum(np.any(schedule, axis=1))
+    return p2
+
 
 def calculate_p3(solution, *args, **kwargs):
     dataset = kwargs['dataset']
