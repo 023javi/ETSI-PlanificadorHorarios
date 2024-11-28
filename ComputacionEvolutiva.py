@@ -231,17 +231,29 @@ def hours_per_subject(dataset):
 # - A través de args y kwargs se pueden pasar argumentos adicionales que vayamos a necesitar
 #fitness_timetabling(candidate, dataset=dataset) # Devuelve la fitness del candidato de ejemplo
 
-'''
+
 def tournament_selection(population, fitness, number_parents, *args, **kwargs):
-    t = kwargs['tournament_size'] # Tamaño del torneo
-    # Selecciona number_parents individuos de la población mediante selección por torneo
-    return None
+    t = kwargs['tournament_size']  # Tamaño del torneo
+    newpopulation = []
+
+    for _ in range(number_parents):
+        parent = select_one_parent(population, fitness, t)
+        newpopulation.append(parent)
+
+    return newpopulation
+
+def select_one_parent(population, fitness, tournament_size):
+    # Selecciona tournament_size individuos aleatoriamente
+    selected_indices = np.random.choice(len(population), tournament_size, replace=False)
+    # Encuentra el individuo con el mejor fitness en el torneo
+    best_index = selected_indices[np.argmin([fitness[i] for i in selected_indices])]
+    return population[best_index]
 
 # Pista:
 # - Crear una función auxiliar que genere un padre a partir de una selección por torneo
 # - Recuerda usar la misma librería de números aleatorios que en el resto del código
 
-
+'''
 def one_point_crossover(parent1, parent2, p_cross, *args, **kwargs):
     # Realiza el cruce de dos padres con una probabilidad p_cross
     return None, None
