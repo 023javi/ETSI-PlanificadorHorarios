@@ -220,7 +220,7 @@ def fitness_timetabling(solution, *args, **kwargs):
     return 1 / (1 + p1 + p2 + p3)
 
 
-
+print(fitness_timetabling(candidate, dataset=dataset))
 def hours_per_subject(dataset):
     return [course[1] for course in dataset['courses']]
 
@@ -295,12 +295,15 @@ def generational_replacement(population, fitness, offspring, fitness_offspring, 
     new_fitness = fitness_offspring
     return new_population, new_fitness
 
-'''
+
 def generation_stop(generation, fitness, *args, **kwargs):
     max_gen=kwargs['max_gen']
+    if generation == max_gen:
+        return True
     # Comprueba si se cumple el criterio de parada (máximo número de generaciones)
-    return None
+    return False
 
+'''
 def genetic_algorithm(generate_population, pop_size, fitness_function, stopping_criteria, offspring_size,
                       selection, crossover, p_cross, mutation, p_mut, environmental_selection, *args, **kwargs):
     # Aplica un algoritmo genético a un problema de maximización
