@@ -287,12 +287,15 @@ def uniform_mutation(chromosome, p_mut, *args, **kwargs):
     return mutated_chromosome
 
 
-'''
+
 def generational_replacement(population, fitness, offspring, fitness_offspring, *args, **kwargs):
     # Realiza la sustitución generacional de la población
     # Debe devolver tanto la nueva población como el fitness de la misma
-    return None, None
+    new_population = offspring
+    new_fitness = fitness_offspring
+    return new_population, new_fitness
 
+'''
 def generation_stop(generation, fitness, *args, **kwargs):
     max_gen=kwargs['max_gen']
     # Comprueba si se cumple el criterio de parada (máximo número de generaciones)
