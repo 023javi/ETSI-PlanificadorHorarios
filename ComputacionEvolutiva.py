@@ -253,11 +253,23 @@ def select_one_parent(population, fitness, tournament_size):
 # - Crear una función auxiliar que genere un padre a partir de una selección por torneo
 # - Recuerda usar la misma librería de números aleatorios que en el resto del código
 
-'''
-def one_point_crossover(parent1, parent2, p_cross, *args, **kwargs):
-    # Realiza el cruce de dos padres con una probabilidad p_cross
-    return None, None
 
+def one_point_crossover(parent1, parent2, p_cross, *args, **kwargs):
+    # Verificar si se realiza el cruce basado en la probabilidad p_cross
+    if np.random.rand() > p_cross:
+        # Si no se realiza el cruce, los hijos son copias de los padres
+        return parent1, parent2
+
+    # Seleccionar un punto de cruce aleatorio
+    crossover_point = np.random.randint(1, len(parent1))
+
+    # Crear los hijos combinando las partes de los padres
+    child1 = np.concatenate((parent1[:crossover_point], parent2[crossover_point:]))
+    child2 = np.concatenate((parent2[:crossover_point], parent1[crossover_point:]))
+
+    return child1, child2
+
+'''
 def uniform_mutation(chromosome, p_mut, *args, **kwargs):
     dataset = kwargs['dataset'] # Dataset con la misma estructura que el ejemplo
     # Realiza la mutación gen a gen con una probabilidad p_mut
