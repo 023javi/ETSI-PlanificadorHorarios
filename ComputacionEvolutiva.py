@@ -269,13 +269,25 @@ def one_point_crossover(parent1, parent2, p_cross, *args, **kwargs):
 
     return child1, child2
 
-'''
+
 def uniform_mutation(chromosome, p_mut, *args, **kwargs):
     dataset = kwargs['dataset'] # Dataset con la misma estructura que el ejemplo
-    # Realiza la mutación gen a gen con una probabilidad p_mut
-    # Obtener el alfabeto del dataset para aplicar la mutación
-    return None
+    # Extraer el alfabeto (valores permitidos para cada gen) del dataset
+    n_days = dataset['n_days']
+    n_hours_day = dataset['n_hours_day']
+    alphabet = list(range(n_days * n_hours_day))  # Rango de valores posibles
 
+    # Realizar la mutación
+    mutated_chromosome = chromosome.copy()
+    for i in range(len(mutated_chromosome)):
+        if np.random.rand() < p_mut:
+            # Mutar el gen seleccionando un valor aleatorio del alfabeto
+            mutated_chromosome[i] = np.random.choice(alphabet)
+
+    return mutated_chromosome
+
+
+'''
 def generational_replacement(population, fitness, offspring, fitness_offspring, *args, **kwargs):
     # Realiza la sustitución generacional de la población
     # Debe devolver tanto la nueva población como el fitness de la misma
