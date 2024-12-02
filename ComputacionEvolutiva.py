@@ -395,7 +395,8 @@ def generar_horario(dataset):
 
     return horario
 
-def generar_poblacion(dataset, pop_size=5):
+def generar_poblacion_final(pop_size=5, *args, **kwargs):
+    dataset = kwargs['dataset']
     return [generar_horario(dataset) for _ in range(pop_size)]
 
 '''
@@ -433,7 +434,7 @@ def generar_horario_valido(dataset):
 def generar_poblacion(dataset, tam_poblacion=10):
     return [generar_horario_valido(dataset) for _ in range(tam_poblacion)]
 '''
-poblacion = generar_poblacion(dataset, pop_size=5)
+poblacion = generar_poblacion(5, dataset=dataset)
 
 # Mostrar horarios
 for i, horario in enumerate(poblacion):

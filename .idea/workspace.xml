@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f86f4ec-b2dd-4b8d-9160-c9a50e070844" name="Changes" comment="Feat: Edit generate_random_array_int method">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ComputacionEvolutiva.py" beforeDir="false" afterPath="$PROJECT_DIR$/ComputacionEvolutiva.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,7 +87,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ComputacionEvolutiva.py</url>
-          <line>607</line>
+          <line>608</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
