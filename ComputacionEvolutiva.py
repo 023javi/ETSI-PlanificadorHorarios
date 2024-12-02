@@ -339,11 +339,105 @@ def genetic_algorithm(generate_population, pop_size, fitness_function, stopping_
     return population, fitness, generation, best_fitness, mean_fitness
 
 
+'''
+dataset = {"n_courses" : 3,
+           "n_days" : 3,
+           "n_hours_day" : 3,
+           "courses" : [("IA", 1), ("ALG", 2), ("BD", 3)]}
+'''
 
-
+'''
 ### Coloca aquí tus funciones propuestas para la generación de población inicial ###
+def generate_random_array_final(alphatet, lenght):
+    return np.random.choice(alphatet, lenght)
+
+def generate_initial_population_final(pop_size, *args, **kwargs):
+    dataset = kwargs['dataset']
+
+    n_hours_day = dataset['n_hours_day']
+    n_days = dataset['n_days']
+    courses = dataset['courses']
+
+    alphabet = list(range(n_hours_day*n_days))
+    length = sum(course[1] for course in courses)
+    pop = [generate_random_array_final(alphabet, length) for _ in range(pop_size)]
+
+    timetable = np.zeros()
+
+    for course in courses:
+        n_hours_per_subject = course[1]
+        for val in pop:
+
+'''
 
 ### Coloca aquí tus funciones de fitness propuestas ###
+
+def generar_horario(dataset):
+    n_days = dataset["n_days"]
+    n_hours_day = dataset["n_hours_day"]
+    courses = dataset['courses']
+    horario = np.full((n_days, n_hours_day), None)
+
+    for subject, hours in courses:
+        horas_asignadas = 0
+        while horas_asignadas < hours:
+            day = np.random.randint(0, n_days)
+            hour = np.random.randint(0, n_hours_day)
+
+            if (hour < n_hours_day and horario[day, hour] is None and (sum(1 for h in horario[day] if subject == h) < 2)):
+                horario[day, hour] = subject
+                horas_asignadas += 1
+
+                if horas_asignadas < hours and hour + 1 < n_hours_day:
+                    if horario[day, hour+1] is None:
+                        horario[day, hour+1] = subject
+                        horas_asignadas += 1
+
+    return horario
+
+def generar_poblacion(dataset, pop_size=5):
+    return [generar_horario(dataset) for _ in range(pop_size)]
+
+'''
+def generar_horario_valido(dataset):
+    n_days = dataset["n_days"]
+    n_hours_day = dataset["n_hours_day"]
+    courses = dataset["courses"]  # [(name, hours), ...]
+
+    # Inicializamos el horario vacío
+    horario = np.full((n_days, n_hours_day), None)
+
+    for asignatura, horas_totales in courses:
+        horas_asignadas = 0
+        while horas_asignadas < horas_totales:
+            dia = np.random.randint(0, n_days)
+            hora_inicio = np.random.randint(0, n_hours_day)
+
+            # Comprobamos restricciones
+            if (hora_inicio < n_hours_day
+                    and horario[dia, hora_inicio] is None  # Espacio vacío
+                    and sum(1 for h in horario[dia] if h == asignatura) < 2):  # Máx 2 horas/día
+
+                # Asignar la hora
+                horario[dia, hora_inicio] = asignatura
+                horas_asignadas += 1
+
+                # Intentar asignar consecutivo si hay más horas por asignar
+                if horas_asignadas < horas_totales and hora_inicio + 1 < n_hours_day:
+                    if horario[dia, hora_inicio + 1] is None:
+                        horario[dia, hora_inicio + 1] = asignatura
+                        horas_asignadas += 1
+    return horario
+
+
+def generar_poblacion(dataset, tam_poblacion=10):
+    return [generar_horario_valido(dataset) for _ in range(tam_poblacion)]
+'''
+poblacion = generar_poblacion(dataset, pop_size=5)
+
+# Mostrar horarios
+for i, horario in enumerate(poblacion):
+    print(f"Horario {i+1}:\n{horario}\n")
 
 ### Coloca aquí tus funciones de selección propuestas ###
 
