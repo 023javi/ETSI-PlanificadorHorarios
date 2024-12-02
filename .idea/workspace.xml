@@ -83,4 +83,15 @@
     <MESSAGE value="Feat: Edit generate_random_array_int method" />
     <option name="LAST_COMMIT_MESSAGE" value="Feat: Edit generate_random_array_int method" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ComputacionEvolutiva.py</url>
+          <line>513</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
 </project>

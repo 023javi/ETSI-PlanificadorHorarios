@@ -208,7 +208,6 @@ def fitness_timetabling(solution, *args, **kwargs):
     Calcula el fitness de una solución de timetabling siguiendo las penalizaciones.
     """
     dataset = kwargs['dataset']
-    print("Solution: ", solution)
     c1 = calculate_c1(solution, dataset=dataset)
     c2 = calculate_c2(solution, dataset=dataset)
     p1 = calculate_p1(solution, dataset=dataset)
@@ -273,28 +272,29 @@ def one_point_crossover(parent1, parent2, p_cross, *args, **kwargs):
 
 def uniform_mutation(chromosome, p_mut, *args, **kwargs):
     dataset = kwargs['dataset'] # Dataset con la misma estructura que el ejemplo
-    # Extraer el alfabeto (valores permitidos para cada gen) del dataset
-    n_days = dataset['n_days']
-    n_hours_day = dataset['n_hours_day']
-    alphabet = list(range(n_days * n_hours_day))  # Rango de valores posibles
-
-    # Realizar la mutación
-    mutated_chromosome = chromosome.copy()
-    for i in range(len(mutated_chromosome)):
-        if np.random.rand() < p_mut:
-            # Mutar el gen seleccionando un valor aleatorio del alfabeto
-            mutated_chromosome[i] = np.random.choice(alphabet)
-
-    return mutated_chromosome
+    # Realiza la mutación gen a gen con una probabilidad p_mut
+    # Obtener el alfabeto del dataset para aplicar la mutación
+    sol = chromosome.copy()
+    m = dataset['n_days']
+    k = dataset['n_hours_day']
+    for i in range(0,len(sol)):
+        if(np.random.random() < p_mut):
+            sol[i] = np.random.randint(0,m*k)
+    return sol
 
 
 
 def generational_replacement(population, fitness, offspring, fitness_offspring, *args, **kwargs):
     # Realiza la sustitución generacional de la población
     # Debe devolver tanto la nueva población como el fitness de la misma
-    new_population = offspring
-    new_fitness = fitness_offspring
-    return new_population, new_fitness
+    auxp = population.copy()
+    auxf = fitness.copy()
+    for i in range(len(offspring)):
+        auxp.pop(0)
+        auxp.append(offspring.pop(0))
+        auxf.pop(0)
+        auxf.append(fitness_offspring.pop(0))
+    return auxp, auxf
 
 
 def generation_stop(generation, fitness, *args, **kwargs):
@@ -314,10 +314,10 @@ def genetic_algorithm(generate_population, pop_size, fitness_function, stopping_
     mean_fitness = [sum(fitness) / len(fitness)]
     generation = 1
 
+
     # Ciclo evolutivo
     while not stopping_criteria(generation, fitness, *args, **kwargs):
         auxP, auxF = population.copy(), fitness.copy()
-
         for _ in range(offspring_size // 2):
             parents = selection(population, fitness, 2, *args, **kwargs)
             offspring1, offspring2 = crossover(parents[0], parents[1], p_cross, *args, **kwargs)
@@ -333,6 +333,8 @@ def genetic_algorithm(generate_population, pop_size, fitness_function, stopping_
         best_fitness.append(max(fitness))
         mean_fitness.append(sum(fitness) / len(fitness))
         generation += 1
+
+
 
     return population, fitness, generation, best_fitness, mean_fitness
 
@@ -505,7 +507,14 @@ def launch_experiment(seeds, dataset, generate_population, pop_size, fitness_fun
 
 # Crear un conjunto de 31 semillas para los experimentos
 seeds = [1234567890 + i*23 for i in range(31)] # Semillas de ejemplo, cambiar por las semillas que se quieran
-launch_experiment(seeds, dataset1, generate_initial_population_timetabling, 50, fitness_timetabling, calculate_c1, calculate_c2,
+bestIndividualsAux,bestFitnessIndAux,_,_,_,_ = launch_experiment(seeds, dataset1, generate_initial_population_timetabling, 50, fitness_timetabling, calculate_c1, calculate_c2,
                   calculate_p1, calculate_p2, calculate_p3, generation_stop, 50, tournament_selection, one_point_crossover, 0.8,
                   uniform_mutation, 0.1, generational_replacement, max_gen=50, tournament_size=2)
+
+print("Mejor individuo del mejor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(max(bestFitnessIndAux))])
+print("\nMejor individuo del mediano: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(median(bestFitnessIndAux))])
+print("\nMejor individuo del peor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(min(bestFitnessIndAux))])
 # Recuerda también mostrar el horario de la mejor solución obtenida en los casos peor, mejor y mediano
