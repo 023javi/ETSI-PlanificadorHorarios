@@ -106,7 +106,7 @@ def calculate_c1(solution, *args, **kwargs):
 
     c1 = np.sum(schedule[schedule > 1] - 1)
 
-    return c1
+    return int(c1)
 
 print("c1: ", calculate_c1(candidate, dataset=dataset))
 
@@ -153,7 +153,7 @@ def calculate_p1(solution, *args, **kwargs):
             last = len(day) - np.argmax(day[::-1] > 0)  # Última hora asignada
             p1 += np.sum(day[first:last] == 0)  # Contar huecos entre primera y última hora
 
-    return p1
+    return int(p1)
 
 
 print("p1: ", calculate_p1(candidate, dataset=dataset))
@@ -168,7 +168,7 @@ def calculate_p2(solution, *args, **kwargs):
 
     # Contar días con asignaturas
     p2 = np.sum(np.any(schedule, axis=1))
-    return p2
+    return int(p2)
 
 print("p2: ", calculate_p2(candidate, dataset=dataset))
 def calculate_p3(solution, *args, **kwargs):
@@ -198,7 +198,8 @@ def calculate_p3(solution, *args, **kwargs):
             if len(hours) > 1 and any(b - a > 1 for a, b in zip(sorted(hours), sorted(hours)[1:])):
                 p3 += 1
 
-    return p3
+    return int(p3)
+
 
 print("p3:", calculate_p3(candidate, dataset=dataset))
 
@@ -297,32 +298,46 @@ def generational_replacement(population, fitness, offspring, fitness_offspring, 
 
 
 def generation_stop(generation, fitness, *args, **kwargs):
+    # Comprueba si se cumple el criterio de parada (máximo número de generaciones)
     max_gen=kwargs['max_gen']
     if generation == max_gen:
         return True
-    # Comprueba si se cumple el criterio de parada (máximo número de generaciones)
     return False
 
-'''
+
 def genetic_algorithm(generate_population, pop_size, fitness_function, stopping_criteria, offspring_size,
                       selection, crossover, p_cross, mutation, p_mut, environmental_selection, *args, **kwargs):
-    # Aplica un algoritmo genético a un problema de maximización
-    population = None # Crea la población de individuos de tamaño pop_size
-    fitness = None # Contiene la evaluación de la población
-    best_fitness = [] # Guarda el mejor fitness de cada generación
-    mean_fitness = [] # Guarda el fitness medio de cada generación
-    generation = 0 # Contador de generaciones
+    # Inicializar población
+    population = generate_population(pop_size, *args, **kwargs)
+    fitness = [fitness_function(ind, *args, **kwargs) for ind in population]
+    best_fitness = [max(fitness)]
+    mean_fitness = [sum(fitness) / len(fitness)]
+    generation = 1
 
-    # 1 - Inicializa la población con la función generate_population
-    # 2 - Evalúa la población con la función fitness_function
-    # 3 - Mientras no se cumpla el criterio de parada stopping_criteria
-    # 4 - Selección de padres con la función selection
-    # 5 - Cruce de padres mediante la función crossover con probabilidad p_cross
-    # 6 - Mutación de los descendientes con la función mutation con probabilidad p_mut
-    # 7 - Evaluación de los descendientes
-    # 8 - Generación de la nueva población con la función environmental_selection
+    # Ciclo evolutivo
+    while not stopping_criteria(generation, fitness, *args, **kwargs):
+        auxP, auxF = population.copy(), fitness.copy()
+
+        for _ in range(offspring_size // 2):
+            parents = selection(population, fitness, 2, *args, **kwargs)
+            offspring1, offspring2 = crossover(parents[0], parents[1], p_cross, *args, **kwargs)
+            offspring1 = mutation(offspring1, p_mut, *args, **kwargs)
+            offspring2 = mutation(offspring2, p_mut, *args, **kwargs)
+            offspring_fitness = [
+                fitness_function(offspring1, *args, **kwargs),
+                fitness_function(offspring2, *args, **kwargs)
+            ]
+            auxP, auxF = environmental_selection(auxP, auxF, [offspring1, offspring2], offspring_fitness, *args, **kwargs)
+
+        population, fitness = auxP.copy(), auxF.copy()
+        best_fitness.append(max(fitness))
+        mean_fitness.append(sum(fitness) / len(fitness))
+        generation += 1
 
     return population, fitness, generation, best_fitness, mean_fitness
+
+
+
 
 ### Coloca aquí tus funciones propuestas para la generación de población inicial ###
 
@@ -494,4 +509,3 @@ launch_experiment(seeds, dataset1, generate_initial_population_timetabling, 50, 
                   calculate_p1, calculate_p2, calculate_p3, generation_stop, 50, tournament_selection, one_point_crossover, 0.8,
                   uniform_mutation, 0.1, generational_replacement, max_gen=50, tournament_size=2)
 # Recuerda también mostrar el horario de la mejor solución obtenida en los casos peor, mejor y mediano
-'''
