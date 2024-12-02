@@ -388,10 +388,50 @@ def calculate_p1_final(solution):
             start = occupied_possitions[0]
             end = occupied_possitions[-1]
             p1 += sum(1 for i in range(start, end + 1) if day[i] is None)
-    return p1
+    return int(p1)
 
+for i, horario in enumerate(poblacion):
+    print(f"Horario {i+1} p1:\n{calculate_p1_final(horario)}\n")
 
-print(f"Horario:\n{calculate_p1_final(poblacion[0])}\n")
+def calculate_p2_final(solution):
+    ### Buscamos calcular el número de días utilizados
+    p2 = 0
+
+    days = list(zip(*solution))
+    use = False
+    for day in days:
+        for i, subject in enumerate(day):
+            if subject is not None:
+                use = True
+        if use:
+            p2 += 1
+            use = False
+    return p2
+
+for i, horario in enumerate(poblacion):
+    print(f"Horario {i+1} p2: \n{calculate_p2_final(horario)}\n")
+
+def calculate_p3_final(solution):
+    ### Buscamos calcular el numero de horas no consecutivas en un mismo día
+    p3 = 0
+    days = list(zip(*solution))
+
+    for day in days:
+        last_seen = {}
+        already_counted = set()
+
+        for hour, subject in enumerate(day):
+            if subject is not None:
+                if subject in last_seen and subject not in already_counted:
+                    if hour - last_seen[subject] > 1:
+                        p3 += 1
+                        already_counted.add(subject)
+
+            last_seen[subject] = hour
+    return p3
+
+for i, horario in enumerate(poblacion):
+    print(f"Horario {i+1} p3: \n{calculate_p3_final(horario)}\n")
 
 ### Coloca aquí tus funciones de selección propuestas ###
 
