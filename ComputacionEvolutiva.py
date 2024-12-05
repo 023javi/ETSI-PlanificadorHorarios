@@ -418,23 +418,25 @@ def calculate_p1_final(solution):
             p1 += sum(1 for i in range(start, end+1) if len(day[i]) == 0)
     return int(p1)
 
-for i, horario in enumerate(poblacion):
-    print(f"Horario {i+1} p1: \n{calculate_p1_final(horario)}\n")
+
 
 def calculate_p2_final(solution):
-### Buscamos calcular el número de días utilizados
-  p2 = 0
+    ### Buscamos calcular el número de días utilizados
+    p2 = 0
 
-  days = list(zip(*solution))
-  use = False
-  for day in days:
-      for i, subject in enumerate(day):
-          if subject is not None:
-              use = True
-      if use:
-          p2 += 1
-          use = False
-  return p2
+    solution_transp = zip(*solution)
+    use = False
+    for day in solution_transp:
+        for cell in day:
+            if len(cell) > 0:
+                use = True
+        if use:
+            p2 += 1
+            use = False
+    return p2
+
+for i, horario in enumerate(poblacion):
+    print(f"Horario {i+1} p2: \n{calculate_p2_final(horario)}\n")
 
 def calculate_p3_final(solution):
 ### Buscamos calcular el numero de horas no consecutivas en un mismo día
