@@ -405,22 +405,21 @@ def calculate_c2_final(solution):
     c2 += sum(1 for count in subject_counts.values() if count > 2)
     return c2
 
-for i, horario in enumerate(poblacion):
-    print(f"Horario {i+1} c2: \n{calculate_c2_final(horario)}\n")
+
 def calculate_p1_final(solution):
     ### Aquí vamos a calcular el número de huecos entre las asignaturas del horario ###
     p1 = 0
-
-    days = list(zip(*solution))
-
-    for day in days:
-        occupied_possitions = [i for i, subject in enumerate(day) if subject is not None]
-
+    solution_transp = zip(*solution)
+    for day in solution_transp:
+        occupied_possitions = [i for i, cells in enumerate(day) if len(cells) > 0]
         if occupied_possitions:
             start = occupied_possitions[0]
             end = occupied_possitions[-1]
-            p1 += sum(1 for i in range(start, end + 1) if day[i] is None)
+            p1 += sum(1 for i in range(start, end+1) if len(day[i]) == 0)
     return int(p1)
+
+for i, horario in enumerate(poblacion):
+    print(f"Horario {i+1} p1: \n{calculate_p1_final(horario)}\n")
 
 def calculate_p2_final(solution):
 ### Buscamos calcular el número de días utilizados
