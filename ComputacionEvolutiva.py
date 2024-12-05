@@ -341,28 +341,32 @@ def genetic_algorithm(generate_population, pop_size, fitness_function, stopping_
 
 
 ### Coloca aquí tus funciones propuestas para la generación de población inicial ###
+import numpy as np
+
 def generar_horario(dataset):
     n_days = dataset["n_days"]
     n_hours_day = dataset["n_hours_day"]
-    courses = dataset['courses']
-    horario = np.full((n_days, n_hours_day), None)
+    courses = dataset["courses"]  # Lista de tuplas [(subject, hours)]
 
-    for subject, hours in courses:
+    # Inicializar la matriz con listas vacías
+    horario = np.empty((n_days, n_hours_day), dtype=object)
+    for i in range(n_days):
+        for j in range(n_hours_day):
+            horario[i, j] = []  # Cada celda es una lista vacía
+
+    # Asignar horas a las asignaturas
+    for subject, hours in courses:  # Iterar sobre la lista de tuplas
         horas_asignadas = 0
         while horas_asignadas < hours:
-            day = np.random.randint(0, n_days)
-            hour = np.random.randint(0, n_hours_day)
+            day = np.random.randint(0, n_days)  # Día aleatorio
+            hour = np.random.randint(0, n_hours_day)  # Hora aleatoria
 
-            if (hour < n_hours_day and horario[hour, day] is None and (sum(1 for h in horario[hour] if subject == h) < 2)):
-                horario[hour, day] = subject
-                horas_asignadas += 1
-
-                if horas_asignadas < hours and hour + 1 < n_hours_day:
-                    if horario[hour + 1, day] is None:
-                        horario[hour + 1, day] = subject
-                        horas_asignadas += 1
+            # Añadir la asignatura a la celda correspondiente
+            horario[day, hour].append(subject)
+            horas_asignadas += 1
 
     return horario
+
 
 def generar_poblacion_final(pop_size=5, *args, **kwargs):
     dataset = kwargs['dataset']
@@ -375,6 +379,34 @@ for i, horario in enumerate(poblacion):
     print(f"Horario {i+1}:\n{horario}\n")
 
 ### Coloca aquí tus funciones de fitness propuestas ###
+### Coloca aquí tus funciones de fitness propuestas ###
+def calculate_c1_final(solution):
+    # Buscamos calcular el número de asignaturas que estan en las mismas franjas horarias
+    c1 = 0
+    for listday in solution:
+        for day in listday:
+            if len(day) > 1:
+                c1 += len(day) - 1
+    return c1
+
+def calculate_c2_final(solution):
+    # Número de horas mayor que dos de una misma asignatura impartidas en un mismo dia
+    c2 = 0
+    solution_tranps = zip(*solution)
+    for day in solution_tranps:
+        subject_counts = {}
+        for cell in day:
+            for subject in cell:
+                if subject in subject_counts:
+                    subject_counts[subject] += 1
+                else:
+                    subject_counts[subject] = 1
+
+    c2 += sum(1 for count in subject_counts.values() if count > 2)
+    return c2
+
+for i, horario in enumerate(poblacion):
+    print(f"Horario {i+1} c2: \n{calculate_c2_final(horario)}\n")
 def calculate_p1_final(solution):
     ### Aquí vamos a calcular el número de huecos entre las asignaturas del horario ###
     p1 = 0
@@ -390,48 +422,54 @@ def calculate_p1_final(solution):
             p1 += sum(1 for i in range(start, end + 1) if day[i] is None)
     return int(p1)
 
-for i, horario in enumerate(poblacion):
-    print(f"Horario {i+1} p1:\n{calculate_p1_final(horario)}\n")
-
 def calculate_p2_final(solution):
-    ### Buscamos calcular el número de días utilizados
-    p2 = 0
+### Buscamos calcular el número de días utilizados
+  p2 = 0
 
-    days = list(zip(*solution))
-    use = False
-    for day in days:
-        for i, subject in enumerate(day):
-            if subject is not None:
-                use = True
-        if use:
-            p2 += 1
-            use = False
-    return p2
-
-for i, horario in enumerate(poblacion):
-    print(f"Horario {i+1} p2: \n{calculate_p2_final(horario)}\n")
+  days = list(zip(*solution))
+  use = False
+  for day in days:
+      for i, subject in enumerate(day):
+          if subject is not None:
+              use = True
+      if use:
+          p2 += 1
+          use = False
+  return p2
 
 def calculate_p3_final(solution):
-    ### Buscamos calcular el numero de horas no consecutivas en un mismo día
-    p3 = 0
-    days = list(zip(*solution))
+### Buscamos calcular el numero de horas no consecutivas en un mismo día
+  p3 = 0
+  days = list(zip(*solution))
 
-    for day in days:
-        last_seen = {}
-        already_counted = set()
+  for day in days:
+      last_seen = {}
+      already_counted = set()
 
-        for hour, subject in enumerate(day):
-            if subject is not None:
-                if subject in last_seen and subject not in already_counted:
-                    if hour - last_seen[subject] > 1:
-                        p3 += 1
-                        already_counted.add(subject)
+      for hour, subject in enumerate(day):
+          if subject is not None:
+              if subject in last_seen and subject not in already_counted:
+                  if hour - last_seen[subject] > 1:
+                      p3 += 1
+                      already_counted.add(subject)
 
-            last_seen[subject] = hour
-    return p3
+          last_seen[subject] = hour
+  return p3
 
 for i, horario in enumerate(poblacion):
     print(f"Horario {i+1} p3: \n{calculate_p3_final(horario)}\n")
+
+
+## Número de huecos entre las asignaturas del horario (penaliza)
+## Número de días utilizados (penaliza)
+## Número de horas no consecutivas en un mismo día (penaliza)
+## Número de veces que aparecen rachas de dos horas consecutivas (favorece)
+
+def fitness_timetabling_final(solution, *args, **kwargs):
+
+    p1 = calculate_p1_final(solution)
+
+    return (1) / (1 + p1)
 
 ### Coloca aquí tus funciones de selección propuestas ###
 
