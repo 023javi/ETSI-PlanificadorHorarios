@@ -435,27 +435,24 @@ def calculate_p2_final(solution):
             use = False
     return p2
 
-for i, horario in enumerate(poblacion):
-    print(f"Horario {i+1} p2: \n{calculate_p2_final(horario)}\n")
-
 def calculate_p3_final(solution):
-### Buscamos calcular el numero de horas no consecutivas en un mismo día
-  p3 = 0
-  days = list(zip(*solution))
+    p3 = 0
 
-  for day in days:
-      last_seen = {}
-      already_counted = set()
+    # Iterar sobre cada día
+    solution_transp = zip(*solution)
+    for day in solution_transp:
+        last_seen = {}  # Registro de la última hora en que apareció cada asignatura
+        for hour, cell in enumerate(day):  # Recorrer las celdas del día con su índice (hora)
+            if isinstance(cell, list):  # Confirmar que la celda es una lista
+                for subject in cell:  # Recorrer asignaturas en la celda
+                    if subject in last_seen:
+                        # Verificar si hay un hueco entre la hora actual y la última vez que apareció
+                        if hour - last_seen[subject] > 1:
+                            p3 += 1
+                    # Actualizar la última vez que se vio la asignatura
+                    last_seen[subject] = hour
+    return p3
 
-      for hour, subject in enumerate(day):
-          if subject is not None:
-              if subject in last_seen and subject not in already_counted:
-                  if hour - last_seen[subject] > 1:
-                      p3 += 1
-                      already_counted.add(subject)
-
-          last_seen[subject] = hour
-  return p3
 
 for i, horario in enumerate(poblacion):
     print(f"Horario {i+1} p3: \n{calculate_p3_final(horario)}\n")
