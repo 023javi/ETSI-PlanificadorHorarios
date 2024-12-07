@@ -491,8 +491,33 @@ def selection(population, fitness, number_parents, *args, **kwargs):
         selected_parents.append(population[index])
 
     return selected_parents
-### Coloca aquí tus funciones de cruce propuestas ###
 
+### Coloca aquí tus funciones de cruce propuestas ###
+def one_point_crossover_final(parent1, parent2, p_cross, *args, **kwargs):
+    # Verificar si se realiza el cruce basado en la probabilidad p_cross
+    if np.random.rand() > p_cross:
+        # Si no se realiza el cruce, los hijos son copias de los padres
+        return parent1.copy(), parent2.copy()
+
+    # Obtener las dimensiones de los padres
+    n_days, n_hours_per_day = parent1.shape
+
+    # Seleccionar un punto de cruce aleatorio (en términos de celdas)
+    crossover_point = np.random.randint(1, n_days * n_hours_per_day)
+
+    # Convertir la matriz en un vector lineal para realizar el cruce
+    flat_parent1 = parent1.flatten()
+    flat_parent2 = parent2.flatten()
+
+    # Crear los hijos combinando las partes de los padres
+    flat_child1 = np.concatenate((flat_parent1[:crossover_point], flat_parent2[crossover_point:]))
+    flat_child2 = np.concatenate((flat_parent2[:crossover_point], flat_parent1[crossover_point:]))
+
+    # Reconstruir los hijos en forma de matriz
+    child1 = flat_child1.reshape(n_days, n_hours_per_day)
+    child2 = flat_child2.reshape(n_days, n_hours_per_day)
+
+    return child1, child2
 ### Coloca aquí tus funciones de mutación propuestas ###
 
 ### Coloca aquí tus funciones de reemplazo propuestas ###

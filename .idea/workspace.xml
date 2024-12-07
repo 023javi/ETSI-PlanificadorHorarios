@@ -88,7 +88,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ComputacionEvolutiva.py</url>
-          <line>657</line>
+          <line>682</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
