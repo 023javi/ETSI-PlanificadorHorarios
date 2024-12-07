@@ -454,10 +454,6 @@ def calculate_p3_final(solution):
     return p3
 
 
-for i, horario in enumerate(poblacion):
-    print(f"Horario {i+1} p3: \n{calculate_p3_final(horario)}\n")
-
-
 ## Número de huecos entre las asignaturas del horario (penaliza)
 ## Número de días utilizados (penaliza)
 ## Número de horas no consecutivas en un mismo día (penaliza)
@@ -471,8 +467,30 @@ def fitness_timetabling_final(solution, *args, **kwargs):
     p3 = calculate_p3_final(solution)
     return  1/((1 + p1+p2+p3) + (c1_weighted + c2_weighted))
 
+for i, horario in enumerate(poblacion):
+    print(f"Horario {i+1} fitness: \n{fitness_timetabling_final(horario)}\n")
+
 ### Coloca aquí tus funciones de selección propuestas ###
 
+def selection(population, fitness, number_parents, *args, **kwargs):
+
+    # Calcular la suma total de fitness
+    total_fitness = sum(fitness)
+    # Calcular probabilidades proporcionales al fitness
+    probabilities = [f / total_fitness for f in fitness]
+    # Calcular probabilidades acumuladas
+    cumulative_probabilities = np.cumsum(probabilities)
+
+    selected_parents = []
+    for _ in range(number_parents):
+        # Generar un número aleatorio entre 0 y 1
+        random_number = np.random.rand()
+
+        # Encontrar el índice del individuo correspondiente al intervalo
+        index = np.searchsorted(cumulative_probabilities, random_number)
+        selected_parents.append(population[index])
+
+    return selected_parents
 ### Coloca aquí tus funciones de cruce propuestas ###
 
 ### Coloca aquí tus funciones de mutación propuestas ###
