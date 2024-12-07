@@ -464,10 +464,12 @@ for i, horario in enumerate(poblacion):
 ## Número de veces que aparecen rachas de dos horas consecutivas (favorece)
 
 def fitness_timetabling_final(solution, *args, **kwargs):
-
+    c1_weighted = calculate_c1_final(solution) * 4
+    c2_weighted = calculate_c2_final(solution) * 2
     p1 = calculate_p1_final(solution)
-
-    return (1) / (1 + p1)
+    p2 = calculate_p2_final(solution)
+    p3 = calculate_p3_final(solution)
+    return  1/((1 + p1+p2+p3) + (c1_weighted + c2_weighted))
 
 ### Coloca aquí tus funciones de selección propuestas ###
 
