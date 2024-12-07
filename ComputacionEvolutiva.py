@@ -520,6 +520,28 @@ def one_point_crossover_final(parent1, parent2, p_cross, *args, **kwargs):
     return child1, child2
 ### Coloca aquí tus funciones de mutación propuestas ###
 
+def swap_mutation(schedule, p_mut, *args, **kwargs):
+
+    # Crear una copia del horario para aplicar la mutación
+    mutated_schedule = schedule.copy()
+
+    # Generar un número aleatorio para decidir si se aplica la mutación
+    if np.random.rand() < p_mut:
+        # Obtener las dimensiones del horario
+        n_days, n_hours_per_day = schedule.shape
+
+        # Seleccionar dos posiciones aleatorias en la matriz
+        day1, hour1 = np.random.randint(0, n_days), np.random.randint(0, n_hours_per_day)
+        day2, hour2 = np.random.randint(0, n_days), np.random.randint(0, n_hours_per_day)
+
+        # Intercambiar los valores en las posiciones seleccionadas
+        mutated_schedule[day1, hour1], mutated_schedule[day2, hour2] = (
+            mutated_schedule[day2, hour2],
+            mutated_schedule[day1, hour1],
+        )
+
+    return mutated_schedule
+
 ### Coloca aquí tus funciones de reemplazo propuestas ###
 
 ### Coloca aquí tus funciones de parada propuestas ###
