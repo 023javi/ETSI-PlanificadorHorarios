@@ -575,6 +575,20 @@ def environmental_selection(population, fitness, offspring, fitness_offspring, *
 
 ### Coloca aquí tus funciones de parada propuestas ###
 
+def criterio_parada_final(generation, fitness, *args, **kwargs):
+    e = 1e-6
+    max_gen=kwargs['max_gen']
+    s = kwargs.get['window', 10]
+
+    if generation >= max_gen:
+      return True
+
+    if len(fitness) >= s:
+        fitness_diff = max(fitness[-s:]) - min(fitness[-s:])
+        if fitness_diff < e:
+            return True
+    return False
+
 ################################# NO TOCAR #################################
 #                                                                          #
 import time
