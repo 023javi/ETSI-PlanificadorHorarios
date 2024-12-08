@@ -461,10 +461,6 @@ def calculate_p3_final(solution, dataset):
                     last_seen[subject] = hour
     return int(p3)
 
-## Número de huecos entre las asignaturas del horario (penaliza)
-## Número de días utilizados (penaliza)
-## Número de horas no consecutivas en un mismo día (penaliza)
-## Número de veces que aparecen rachas de dos horas consecutivas (favorece)
 
 def fitness_timetabling_final(solution, *args, **kwargs):
     dataset = kwargs['dataset']
