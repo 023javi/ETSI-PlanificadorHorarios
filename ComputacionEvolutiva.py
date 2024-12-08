@@ -1,13 +1,16 @@
 import numpy as np
 import random
 
+from fontTools.afmLib import kernRE
 from fontTools.merge.util import first
 
 # Ejemplo de dataset de entrada para el problema de asignación de horarios
 dataset = {"n_courses" : 3,
-           "n_days" : 3,
-           "n_hours_day" : 3,
-           "courses" : [("IA", 1), ("ALG", 2), ("BD", 3)]}
+            "n_days" : 3,
+            "n_hours_day" : 3,
+            "courses" : [("IA", 1), ("ALG", 2), ("BD", 3)]}
+
+
 
 
 def generate_random_array_int(alphabet, length):
@@ -380,33 +383,40 @@ for i, horario in enumerate(poblacion):
 
 ### Coloca aquí tus funciones de fitness propuestas ###
 ### Coloca aquí tus funciones de fitness propuestas ###
-def calculate_c1_final(solution):
+def calculate_c1_final(solution, dataset):
     # Buscamos calcular el número de asignaturas que estan en las mismas franjas horarias
     c1 = 0
     for listday in solution:
         for day in listday:
             if len(day) > 1:
                 c1 += len(day) - 1
-    return c1
+    return int(c1)
 
-def calculate_c2_final(solution):
+def calculate_c2_final(solution, dataset):
     # Número de horas mayor que dos de una misma asignatura impartidas en un mismo dia
     c2 = 0
+
+    if dataset['n_hours_day'] <= 2:
+        return 0
     solution_tranps = zip(*solution)
-    for day in solution_tranps:
-        subject_counts = {}
-        for cell in day:
-            for subject in cell:
-                if subject in subject_counts:
-                    subject_counts[subject] += 1
-                else:
-                    subject_counts[subject] = 1
 
-    c2 += sum(1 for count in subject_counts.values() if count > 2)
-    return c2
+    for course in dataset['courses']:
+        subject = course[0]
+
+        for j in range(dataset['n_hours_day']):
+            n_hours_per_subject_day = 0
+            for i in range(dataset['n_days']):
+                if subject in solution[i][j]:
+                    n_hours_per_subject_day += 1
+                    if n_hours_per_subject_day > 2:
+                        c2 += 1
+    return int(c2)
+
+for i, horario in enumerate(poblacion):
+    print(f"Horario {i+1} c2: \n{calculate_c2_final(horario, dataset=dataset)}\n")
 
 
-def calculate_p1_final(solution):
+def calculate_p1_final(solution, dataset):
     ### Aquí vamos a calcular el número de huecos entre las asignaturas del horario ###
     p1 = 0
     solution_transp = zip(*solution)
@@ -418,9 +428,7 @@ def calculate_p1_final(solution):
             p1 += sum(1 for i in range(start, end+1) if len(day[i]) == 0)
     return int(p1)
 
-
-
-def calculate_p2_final(solution):
+def calculate_p2_final(solution, dataset):
     ### Buscamos calcular el número de días utilizados
     p2 = 0
 
@@ -433,9 +441,9 @@ def calculate_p2_final(solution):
         if use:
             p2 += 1
             use = False
-    return p2
+    return int(p2)
 
-def calculate_p3_final(solution):
+def calculate_p3_final(solution, dataset):
     p3 = 0
 
     # Iterar sobre cada día
@@ -451,8 +459,7 @@ def calculate_p3_final(solution):
                             p3 += 1
                     # Actualizar la última vez que se vio la asignatura
                     last_seen[subject] = hour
-    return p3
-
+    return int(p3)
 
 ## Número de huecos entre las asignaturas del horario (penaliza)
 ## Número de días utilizados (penaliza)
@@ -460,15 +467,34 @@ def calculate_p3_final(solution):
 ## Número de veces que aparecen rachas de dos horas consecutivas (favorece)
 
 def fitness_timetabling_final(solution, *args, **kwargs):
-    c1_weighted = calculate_c1_final(solution) * 4
-    c2_weighted = calculate_c2_final(solution) * 2
-    p1 = calculate_p1_final(solution)
-    p2 = calculate_p2_final(solution)
-    p3 = calculate_p3_final(solution)
+    dataset = kwargs['dataset']
+
+    # Verificar que el número de horas de cada asignatura coincida con las requeridas
+    required_hours = {course: hours for course, hours in dataset["courses"]}
+    current_hours = {course: 0 for course in required_hours.keys()}
+
+    # Contar horas de cada asignatura en la solución
+    for day in solution:
+        for hour in day:
+            for subject in hour:
+                if subject in current_hours:
+                    current_hours[subject] += 1
+
+    # Comparar con las horas requeridas
+    for course, required in required_hours.items():
+        if current_hours[course] != required:
+            return 0  # Fitness es 0 si las horas no coinciden
+
+    # Continuar con el cálculo de fitness si las horas son correctas
+    c1_weighted = calculate_c1_final(solution, dataset) * 4
+    c2_weighted = calculate_c2_final(solution, dataset) * 2
+    p1 = calculate_p1_final(solution, dataset)
+    p2 = calculate_p2_final(solution, dataset)
+    p3 = calculate_p3_final(solution, dataset)
+    print(c2_weighted)
     return  1/((1 + p1+p2+p3) + (c1_weighted + c2_weighted))
 
-for i, horario in enumerate(poblacion):
-    print(f"Horario {i+1} fitness: \n{fitness_timetabling_final(horario)}\n")
+
 
 ### Coloca aquí tus funciones de selección propuestas ###
 
@@ -746,9 +772,9 @@ bestIndividualsAux,bestFitnessIndAux,_,_,_,_ = launch_experiment(seeds, dataset1
                   uniform_mutation, 0.1, generational_replacement, max_gen=50, tournament_size=2)
 
 print("Mejor individuo del mejor: \n")
-print(bestIndividualsAux[bestFitnessIndAux.index(max(bestFitnessIndAux))])
+print(print_timetabling_solution(bestIndividualsAux[bestFitnessIndAux.index(max(bestFitnessIndAux))], dataset=dataset))
 print("\nMejor individuo del mediano: \n")
-print(bestIndividualsAux[bestFitnessIndAux.index(median(bestFitnessIndAux))])
+print(print_timetabling_solution(bestIndividualsAux[bestFitnessIndAux.index(median(bestFitnessIndAux))], dataset=dataset))
 print("\nMejor individuo del peor: \n")
-print(bestIndividualsAux[bestFitnessIndAux.index(min(bestFitnessIndAux))])
+print(print_timetabling_solution(bestIndividualsAux[bestFitnessIndAux.index(min(bestFitnessIndAux))], dataset=dataset))
 # Recuerda también mostrar el horario de la mejor solución obtenida en los casos peor, mejor y mediano
