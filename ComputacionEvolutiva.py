@@ -604,7 +604,7 @@ def environmental_selection(population, fitness, offspring, fitness_offspring, *
 def criterio_parada_final(generation, fitness, *args, **kwargs):
     e = 1e-6
     max_gen=kwargs['max_gen']
-    s = kwargs.get['window', 10]
+    s = 5
 
     if generation >= max_gen:
       return True
