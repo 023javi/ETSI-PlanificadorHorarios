@@ -570,34 +570,17 @@ def swap_mutation(schedule, p_mut, *args, **kwargs):
 
 ### Coloca aquí tus funciones de reemplazo propuestas ###
 
-def environmental_selection(population, fitness, offspring, fitness_offspring, *args, **kwargs):
-
-    elite_percentage = kwargs.get("elite_percentage", 0.1)
-    num_elite = max(1, int(len(population) * elite_percentage))
-
-    # Ordenar la población actual por fitness en orden descendente
-    sorted_indices = np.argsort(fitness)[::-1]
-    elite_individuals = [population[i] for i in sorted_indices[:num_elite]]
-    elite_fitness = [fitness[i] for i in sorted_indices[:num_elite]]
-
-    # Combinar hijos con el resto de la población (excluyendo élites)
-    non_elite_population = [population[i] for i in sorted_indices[num_elite:]]
-    non_elite_fitness = [fitness[i] for i in sorted_indices[num_elite:]]
-
-    combined_population = non_elite_population + offspring
-    combined_fitness = non_elite_fitness + fitness_offspring
-
-    # Seleccionar los mejores individuos restantes para completar la nueva población
-    num_remaining = len(population) - num_elite
-    sorted_combined_indices = np.argsort(combined_fitness)[::-1]
-    remaining_individuals = [combined_population[i] for i in sorted_combined_indices[:num_remaining]]
-    remaining_fitness = [combined_fitness[i] for i in sorted_combined_indices[:num_remaining]]
-
-    # Crear la nueva población combinando élites y restantes
-    new_population = elite_individuals + remaining_individuals
-    new_fitness = elite_fitness + remaining_fitness
-
-    return new_population, new_fitness
+def generational_replacement_final(population, fitness, offspring, fitness_offspring, *args, **kwargs):
+    # Realiza la sustitución generacional de la población
+    # Debe devolver tanto la nueva población como el fitness de la misma
+    auxp = population.copy()
+    auxf = fitness.copy()
+    for i in range(len(offspring)):
+        auxp.pop(0)
+        auxp.append(offspring.pop(0))
+        auxf.pop(0)
+        auxf.append(fitness_offspring.pop(0))
+    return auxp, auxf
 
 ### Coloca aquí tus funciones de parada propuestas ###
 
