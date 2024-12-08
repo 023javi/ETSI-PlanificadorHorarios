@@ -746,14 +746,61 @@ def launch_experiment(seeds, dataset, generate_population, pop_size, fitness_fun
 
 # Crear un conjunto de 31 semillas para los experimentos
 seeds = [1234567890 + i*23 for i in range(31)] # Semillas de ejemplo, cambiar por las semillas que se quieran
-bestIndividualsAux,bestFitnessIndAux,_,_,_,_ = launch_experiment(seeds, dataset1, generate_initial_population_timetabling, 50, fitness_timetabling, calculate_c1, calculate_c2,
-                  calculate_p1, calculate_p2, calculate_p3, generation_stop, 50, tournament_selection, one_point_crossover, 0.8,
-                  uniform_mutation, 0.1, generational_replacement, max_gen=50, tournament_size=2)
+bestIndividualsAux,bestFitnessIndAux,_,_,_,_ = launch_experiment(seeds, dataset1, generar_poblacion_final, 50, fitness_timetabling_final, calculate_c1_final, calculate_c2_final,
+                  calculate_p1_final, calculate_p2_final, calculate_p3_final, criterio_parada_final, 50, selection, one_point_crossover_final, 0.1,
+                  swap_mutation, 0.9, generational_replacement_final, max_gen=100, tournament_size=2)
 
 print("Mejor individuo del mejor: \n")
-print(print_timetabling_solution(bestIndividualsAux[bestFitnessIndAux.index(max(bestFitnessIndAux))], dataset=dataset))
+print(bestIndividualsAux[bestFitnessIndAux.index(max(bestFitnessIndAux))])
 print("\nMejor individuo del mediano: \n")
-print(print_timetabling_solution(bestIndividualsAux[bestFitnessIndAux.index(median(bestFitnessIndAux))], dataset=dataset))
+print(bestIndividualsAux[bestFitnessIndAux.index(median(bestFitnessIndAux))])
 print("\nMejor individuo del peor: \n")
-print(print_timetabling_solution(bestIndividualsAux[bestFitnessIndAux.index(min(bestFitnessIndAux))], dataset=dataset))
-# Recuerda también mostrar el horario de la mejor solución obtenida en los casos peor, mejor y mediano
+print(bestIndividualsAux[bestFitnessIndAux.index(min(bestFitnessIndAux))])
+
+bestIndividualsAux,bestFitnessIndAux,_,_,_,_ = launch_experiment(seeds, dataset2, generar_poblacion_final, 50, fitness_timetabling_final, calculate_c1_final, calculate_c2_final,
+                  calculate_p1_final, calculate_p2_final, calculate_p3_final, criterio_parada_final, 50, selection, one_point_crossover_final, 0.1,
+                  swap_mutation, 0.9, generational_replacement_final, max_gen=100, tournament_size=2)
+
+print("Mejor individuo del mejor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(max(bestFitnessIndAux))])
+print("\nMejor individuo del mediano: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(median(bestFitnessIndAux))])
+print("\nMejor individuo del peor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(min(bestFitnessIndAux))])
+
+bestIndividualsAux,bestFitnessIndAux,_,_,_,_ = bestIndividualsAux,bestFitnessIndAux,_,_,_,_ =launch_experiment(seeds, dataset3, generar_poblacion_final, 50, fitness_timetabling_final, calculate_c1_final, calculate_c2_final,
+                  calculate_p1_final, calculate_p2_final, calculate_p3_final, criterio_parada_final, 50, selection, one_point_crossover_final, 0.1,
+                  swap_mutation, 0.9, generational_replacement_final, max_gen=100, tournament_size=2)
+
+print("Mejor individuo del mejor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(max(bestFitnessIndAux))])
+print("\nMejor individuo del mediano: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(median(bestFitnessIndAux))])
+print("\nMejor individuo del peor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(min(bestFitnessIndAux))])
+
+bestIndividualsAux,bestFitnessIndAux,_,_,_,_ = launch_experiment(seeds, dataset4, generar_poblacion_final, 50, fitness_timetabling_final, calculate_c1_final, calculate_c2_final,
+                  calculate_p1_final, calculate_p2_final, calculate_p3_final, criterio_parada_final, 50, selection, one_point_crossover_final, 0.1,
+                  swap_mutation, 0.9, generational_replacement_final, max_gen=100, tournament_size=2)
+
+print("Mejor individuo del mejor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(max(bestFitnessIndAux))])
+print("\nMejor individuo del mediano: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(median(bestFitnessIndAux))])
+print("\nMejor individuo del peor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(min(bestFitnessIndAux))])
+
+bestIndividualsAux,bestFitnessIndAux,_,_,_,_ = launch_experiment(seeds, dataset5, generar_poblacion_final, 50, fitness_timetabling_final, calculate_c1_final, calculate_c2_final,
+                  calculate_p1_final, calculate_p2_final, calculate_p3_final, criterio_parada_final, 50, selection, one_point_crossover_final, 0.1,
+                  swap_mutation, 0.9, generational_replacement_final, max_gen=100, tournament_size=2)
+
+print("Mejor individuo del mejor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(max(bestFitnessIndAux))])
+print("\nMejor individuo del mediano: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(median(bestFitnessIndAux))])
+print("\nMejor individuo del peor: \n")
+print(bestIndividualsAux[bestFitnessIndAux.index(min(bestFitnessIndAux))])
+
+bestIndividualsAux,bestFitnessIndAux,_,_,_,_ = launch_experiment(seeds, dataset6, generar_poblacion_final, 50, fitness_timetabling_final, calculate_c1_final, calculate_c2_final,
+                  calculate_p1_final, calculate_p2_final, calculate_p3_final, criterio_parada_final, 50, selection, one_point_crossover_final, 0.1,
+                  swap_mutation, 0.9, generational_replacement_final, max_gen=100, tournament_size=2)
